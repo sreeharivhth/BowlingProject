@@ -7,11 +7,9 @@ import java.util.Map;
 
 public class MainManager {
 
-	//ArrayList<HashMap<Integer, Integer>> strikePointsWaitList = new ArrayList<HashMap<Integer, Integer>>();
-	
 	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
 	
-	int spare=20;
+	int spare=-10;
 	int strike=10;
 	int waitStrike=-3;
 	int strikeBuddy=-4;
@@ -20,19 +18,17 @@ public class MainManager {
 	int spareWaitIndex=-1;
 	int spareScoreLast=-1;
 	
-	//boolean shouldWaitForNextTwo=false;
-	
 	int strikeWaitIndex=-1;
 	int strikeScoreLast=-1;
 	
 			
-	int[][] input = new int[][]{{1,2},{strike,strikeBuddy},{strike,strikeBuddy},{6,1}};
+	int[][] input = new int[][]{{1,2},{strike,strikeBuddy},{5,spare},{4,spare},{6,1}};
 	int [][]output=new int[input.length][1];
 	int localSum=-1;
 	
 	public MainManager() {
 						
-		//WORKS FOR CONTINUOUS STRIKES. DIDINT CHECKED WITH MIX OF STRIKES AND SPARES
+		//WORKS FOR CONTINUOUS STRIKES,SPARES AS WELL. CORNER CASE YET TO FINISH. 
 		for (int row = 0; row < input.length; row ++){
 			localSum=0;
 			for (int col = 0; col < 2; col++){
@@ -53,8 +49,11 @@ public class MainManager {
 								int localRow = row;
 								if((waitingObject.inputIndex == (localRow-1)) || (waitingObject.inputIndex == (localRow-2))){
 									if(waitingObject.iterationCount!=0 && waitingObject.iterationCount!=-1){
-										
-										waitingObject.liveScore = waitingObject.liveScore+currentVal;
+										int presentValLocal=currentVal;
+										if(currentVal==spare){
+											presentValLocal=10;
+										}
+										waitingObject.liveScore = waitingObject.liveScore+presentValLocal;
 										waitingObject.iterationCount = --waitingObject.iterationCount;//update iteration count 
 										if(waitingObject.iterationCount==0){
 											output[waitingObject.inputIndex][0]=waitingObject.liveScore;//update the score
