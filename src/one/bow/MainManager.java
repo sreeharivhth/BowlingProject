@@ -7,34 +7,33 @@ import java.util.Map;
 
 public class MainManager {
 
-	public static void main(String[] args) {
-
-		new MainManager();
-		
-	}
+	int strike=10;
+	int spare=-10;
+	int strikeBuddy=-4;
+	
+	int[][] input = new int[][]{{1,2},{3,spare},{1,spare},{strike,strikeBuddy},{strike,strikeBuddy},{1,2}};
+	int[][]output=new int[input.length][1];
 	
 	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
 	
-	int spare=-10;
-	int strike=10;
-	int waitStrike=-3;
-	int strikeBuddy=-4;
+	boolean shouldWaitForSpare=false;
 	
-	boolean shouldWaitForNextOne=false;
 	int spareWaitIndex=-1;
 	int spareScoreLast=-1;
 	
 	int strikeWaitIndex=-1;
 	int strikeScoreLast=-1;
 	
-			
-	int[][] input = new int[][]{{1,2},{strike,strikeBuddy},{5,spare},{4,spare},{6,1}};
-	int [][]output=new int[input.length][1];
 	int localSum=-1;
+	
+	public static void main(String[] args) {
+		new MainManager();
+	}
 	
 	public MainManager() {
 						
 		//WORKS FOR CONTINUOUS STRIKES,SPARES AS WELL. CORNER CASE YET TO FINISH. 
+		
 		for (int row = 0; row < input.length; row ++){
 			localSum=0;
 			for (int col = 0; col < 2; col++){
@@ -71,9 +70,9 @@ public class MainManager {
 							}
         			}
         			
-		        	if(shouldWaitForNextOne){
+		        	if(shouldWaitForSpare){
                 		spareScoreLast = spareScoreLast+currentVal;
-                		shouldWaitForNextOne=false;
+                		shouldWaitForSpare=false;
                 		//put value to last index
                 		output[spareWaitIndex][0]= spareScoreLast;
                 		//reset the indexes
@@ -82,13 +81,12 @@ public class MainManager {
                 		localSum=0;
                 	}
                 	if(currentVal==spare){
-	                		shouldWaitForNextOne=true;
+	                		shouldWaitForSpare=true;
 	                		spareScoreLast=10;
 	                		spareWaitIndex=row;
 	                }
                 	else if(currentVal ==strike){
-                			/*shouldWaitForNextTwo=true;*/
-                			waitStrike=2;
+                			
                 			strikeScoreLast=10;
                 			strikeWaitIndex=row;
                 				
@@ -121,12 +119,11 @@ public class MainManager {
 	                	localSum=localSum+currentVal;
 	                }
                 	if(col==1){
-                		
-                		if(spareScoreLast!=-1 && (false==shouldWaitForNextOne)){
+                		if(spareScoreLast!=-1 && (false==shouldWaitForSpare)){
                 			output[row][0]=spareScoreLast;
                     		localSum=0;	
                     		spareWaitIndex = row;
-                		}else if(shouldWaitForNextOne){
+                		}else if(shouldWaitForSpare){
                 			//don't add sum, keep values in waiting list only
                 			continue;  			
                 		}
