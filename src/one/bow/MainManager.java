@@ -9,16 +9,26 @@ public class MainManager {
 
 	final int strike = 10;
 	final int spare = -10;
-	int strikeBuddy = -4;
+	final int strikeBuddy = -4;
 
 	// included elements with 3rd index
 	// int[][] input = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
 
-	int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
+	/*final int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
 								{ strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
-								{ strike,strikeBuddy }, { strike, strike, strike } };
-
+								{ strike,strikeBuddy }, { strike, strike, strike } };//success
+	 */
+	
+	/*final int[][] input = new int[][] { { 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
+		{ 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
+		{ 1,1 }, { 1,1, 0 } };//success
+	 */
+	
+	final int[][] input = new int[][] { { 1,spare }, { 1,1 }, { strike,strikeBuddy }, { 1,1 },
+		{ 1,1 }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 1,1 },
+		{ 1,1 }, { 1,1, 0 } };
+		
 	int[][] output = new int[input.length][1];
 
 	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
@@ -31,6 +41,7 @@ public class MainManager {
 	int strikeWaitIndex = -1;
 	int strikeScoreLast = -1;
 	int columsToConsider = 0;
+	
 	int localSum = -1;
 
 	public static void main(String[] args) {
@@ -39,9 +50,9 @@ public class MainManager {
 
 	public MainManager() {
 
+		// SCORE COUNTING MANIPULATION DONE
 		// WORKS FOR CONTINUOUS STRIKES,SPARES AS WELL. CORNER CASE NEED TO POLISH
-		// SCORE COUNTING MANIPULATION PENDING
-
+		
 		for (int row = 0; row < input.length; row++) {
 			localSum = 0;
 			if (row != 9) {
@@ -78,9 +89,11 @@ public class MainManager {
 																								// iteration
 																								// count
 								if (waitingObject.iterationCount == 0) {
-									output[waitingObject.inputIndex][0] = waitingObject.liveScore;// update
-																									// the
-																									// score
+									// update the score
+									
+									int previousIndex= waitingObject.inputIndex-1>0?waitingObject.inputIndex-1:0;
+									output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
+									
 									waitingObject.iterationCount = -1;
 								}
 							}
@@ -92,13 +105,15 @@ public class MainManager {
 					spareScoreLast = spareScoreLast + currentVal;
 					shouldWaitForSpare = false;
 					// put value to last index
-					output[spareWaitIndex][0] = spareScoreLast;
+					int previousIndex= spareWaitIndex-1>0?spareWaitIndex-1:0;
+					output[spareWaitIndex][0] = spareScoreLast+ output[previousIndex][0];
+					
 					// reset the indexes
 					spareScoreLast = -1;
 					spareWaitIndex = -1;
 					localSum = 0;
 				}
-
+				/* This is for special case scenario */
 				if (row == 9) {
 					if(currentVal!=-1){
 						int localCurrent= currentVal;
@@ -163,14 +178,19 @@ public class MainManager {
 
 				if (col == checkPoint) {
 					if (spareScoreLast != -1 && (false == shouldWaitForSpare)) {
-						output[row][0] = spareScoreLast;
+						
+						int previousIndex= row-1 >0 ?row-1:0;
+						output[row][0] = spareScoreLast+output[previousIndex][0];
+						
 						localSum = 0;
 						spareWaitIndex = row;
 					} else if (shouldWaitForSpare) {
 						// don't add sum, keep values in waiting list only
 						continue;
 					} else {
-						output[row][0] = localSum;
+						int previousIndex= row-1 >0 ?row-1:0;
+						output[row][0] = localSum+output[previousIndex][0];
+												
 						localSum = 0;
 					}
 				}
