@@ -11,7 +11,6 @@ public class MainManager {
 	final int spare = -10;
 	final int strikeBuddy = -4;
 
-	// included elements with 3rd index
 	// int[][] input = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
 
@@ -38,9 +37,13 @@ public class MainManager {
 		{ strike,strikeBuddy }, { 9,spare,1} };//ERROR>- shows 168 as final score
 	 */
 	
-	final int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { 1,1 },
-		{ 9 , 0  }, { 8,0 }, {8,0 }, { 5,0 },
-		{ 9,0 }, { 9,spare,6} };//ERROR >= Shows final score as 96, were as I got 105
+	int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
+		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
+		{ 9,0 }, { strike,5,4} };//ERROR >= Shows final score as 96, were as I got 105
+		
+	/*final int[][] input = new int[][] { { 8,0 }, { 6,0 }, { strike,strikeBuddy }, { strike,strikeBuddy },
+		{ strike,strikeBuddy }, { 8,0 }, {strike,strikeBuddy}, { 6,1 },
+		{ strike,strikeBuddy }, { strike,7,2} };*///ERROR >= Shows final score as 96, were as I got 105
 		
 	int[][] output = new int[input.length][1];
 
@@ -49,12 +52,13 @@ public class MainManager {
 	
 
 	public static void main(String[] args) {
-		new MainManager();
+		new MainManager().calculateScores();
 	}
+	
+	public boolean calculateScores() {
+		boolean isExceptionCaused=false;
 
-	public MainManager() {
-
-		// WORKS FOR CONTINUOUS STRIKES,SPARES AS WELL. CORNER CASE NEED TO POLISH
+		// PROBLEM OF COUNTING LAST FRAME , WORKS ONLY FOR LAST FRAME COMBINATIONS. DIDNT INCLUDED COMBINATIONS IN PREVIOUS FRAMES
 		// UT PENDING
 		
 		boolean shouldWaitForSpare = false;
@@ -84,7 +88,7 @@ public class MainManager {
 				}
 
 				// Iterate over @strikeWaitingList
-				if (strikeWaitingList.size() > 0) {
+				if (strikeWaitingList.size() > 0 && row != 9) {
 					for (int i = 0; i < strikeWaitingList.size(); i++) {
 						WaitingObject waitingObject = strikeWaitingList.get(i);
 						// Check if waiting object's inputIndex is
@@ -129,14 +133,42 @@ public class MainManager {
 				}
 				/* This is for special case scenario */
 				if (row == 9) {
-					if(currentVal!=-1){
+					/*if(currentVal!=-1){
 						int localCurrent= currentVal;
 						if(currentVal==spare || currentVal==strike){
 							localCurrent=10;
 						}
 						localSum = localSum + localCurrent;	
+					}*/
+					boolean ninthIndexPresent=false;
+					WaitingObject waitingNinthObject=null;
+					for (int i = 0; i < strikeWaitingList.size(); i++) {
+						WaitingObject waitingObject = strikeWaitingList.get(i);
+						int index = waitingObject.inputIndex;
+						if(index==9){
+							ninthIndexPresent=true;
+							waitingNinthObject=waitingObject;
+							break;
+						}
 					}
-					
+					if(!ninthIndexPresent){
+						waitingNinthObject = new WaitingObject();
+						waitingNinthObject.inputIndex=9;
+						waitingNinthObject.iterationCount=3;
+						waitingNinthObject.liveScore=0;
+						strikeWaitingList.add(waitingNinthObject);
+					}
+					if(currentVal==strike){
+						waitingNinthObject.liveScore = waitingNinthObject.liveScore+currentVal;
+					}else if(currentVal==spare){
+						waitingNinthObject.liveScore = 10;
+					}else{
+						waitingNinthObject.liveScore = waitingNinthObject.liveScore+currentVal;
+					}
+					waitingNinthObject.iterationCount=--waitingNinthObject.iterationCount;
+					if(waitingNinthObject.iterationCount==0){
+						output[waitingNinthObject.inputIndex][0] = waitingNinthObject.liveScore + output[waitingNinthObject.inputIndex-1][0];
+					}
 				} else {
 					switch (currentVal) {
 
@@ -189,12 +221,10 @@ public class MainManager {
 
 				int checkPoint = columsToConsider - 1;
 
-				if (col == checkPoint) {
+				if (col == checkPoint && row!=9) {
 					if (spareScoreLast != -1 && (false == shouldWaitForSpare)) {
-						
 						int previousIndex= row-1 >0 ?row-1:0;
 						output[row][0] = spareScoreLast+output[previousIndex][0];
-						
 						localSum = 0;
 						spareWaitIndex = row;
 					} else if (shouldWaitForSpare) {
@@ -203,14 +233,16 @@ public class MainManager {
 					} else {
 						int previousIndex= row-1 >0 ?row-1:0;
 						output[row][0] = localSum+output[previousIndex][0];
-												
-						localSum = 0;
+						localSum = 0;	
 					}
 				}
 			}
 		}
 		printOutput();
+	
+		return isExceptionCaused;
 	}
+	public MainManager() {}
 
 	private class WaitingObject {
 
