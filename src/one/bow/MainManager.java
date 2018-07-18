@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javax.swing.text.StyledEditorKit;
+
 public class MainManager {
 
 	final int strike = 10;
@@ -28,29 +30,50 @@ public class MainManager {
 		{ 1,1 }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 1,1 },
 		{ 1,1 }, { 1,1, 0 } };//works
 	 */
-	/*final int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,spare }, { 5,spare },
+	/*int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,spare }, { 5,spare },
 		{ strike,strikeBuddy }, { 0,1 }, { 7,spare }, { 6,spare },
-		{ strike,strikeBuddy }, { 2,spare,6 } };//ERROR==> Shows 133 as final score
-	 */
+		{ strike,strikeBuddy }, { 2,spare,6 } };*///ERROR==> Shows 133 as final score
+	 
 	/*final int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
 		{ strike,strikeBuddy }, { 7,0 }, { 9,spare }, { 8,spare },
 		{ strike,strikeBuddy }, { 9,spare,1} };//ERROR>- shows 168 as final score
 	 */
 	
-	int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
+	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
-		{ 9,0 }, { strike,5,4} };//ERROR >= Shows final score as 96, were as I got 105
-		
-	/*final int[][] input = new int[][] { { 8,0 }, { 6,0 }, { strike,strikeBuddy }, { strike,strikeBuddy },
+		{ 9,0 }, { strike,5,4} };//WORKS
+	 */
+	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
+		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
+		{ 1,spare }, { strike,1,1} };// WORKING
+*/	
+	/*int[][] input = new int[][] { { 8,0 }, { 6,0 }, { strike,strikeBuddy }, { strike,strikeBuddy },
 		{ strike,strikeBuddy }, { 8,0 }, {strike,strikeBuddy}, { 6,1 },
 		{ strike,strikeBuddy }, { strike,7,2} };*///ERROR >= Shows final score as 96, were as I got 105
+		
+	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 8,1 }, { 5,4 }, { strike,strikeBuddy },
+		{ 8 , 1 }, { 7, 2 }, {	6 , 3 }, { 7, 2 },
+		{ 8,spare }, { strike,strike,9} };//Correct 141
+	 */
+	
+	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 7,2 }, { strike,strikeBuddy }, { 6 , 3 },
+		{ 8 , spare }, { 7, 0 }, {	7 , spare }, { 9 , 0 },
+		{ 9 , 0 }, { 9 ,spare,9} };//Correct 136
+	 */
+	
+	/*int[][] input = new int[][] { { 9,spare }, { 7,spare }, { 9,spare }, { strike,strikeBuddy  },
+		{ 8 , 1 }, { 9, spare }, {	strike,strikeBuddy }, { 7 , spare },
+		{ 7 , spare }, { strike , 5 , 4} };*///I got 187, game got 180??? ERROR
+		
+	int[][] input = new int[][] { { strike,strikeBuddy  }, { 9,0 }, { 7,spare }, { strike,strikeBuddy  },
+		{ strike,strikeBuddy  }, { 7, 0 }, { 9, spare }, { 8 , spare },
+		{ strike,strikeBuddy  }, { 9 , spare , 1} };//Got 177, game got 168
 		
 	int[][] output = new int[input.length][1];
 
 	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
 
 	
-
 	public static void main(String[] args) {
 		new MainManager().calculateScores();
 	}
@@ -88,7 +111,7 @@ public class MainManager {
 				}
 
 				// Iterate over @strikeWaitingList
-				if (strikeWaitingList.size() > 0 && row != 9) {
+				if (strikeWaitingList.size() > 0 ) {
 					for (int i = 0; i < strikeWaitingList.size(); i++) {
 						WaitingObject waitingObject = strikeWaitingList.get(i);
 						// Check if waiting object's inputIndex is
@@ -98,6 +121,11 @@ public class MainManager {
 								((waitingObject.inputIndex == (localRow - 1))
 										|| (waitingObject.inputIndex == (localRow - 2)))) {
 							if (waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1) {
+								
+								if(waitingObject.inputIndex==9){
+									continue;
+								}
+								
 								int presentValLocal = currentVal;
 								if (currentVal == spare) {
 									presentValLocal = 10;
@@ -110,9 +138,9 @@ public class MainManager {
 									// update the score
 									
 									int previousIndex= waitingObject.inputIndex-1>0?waitingObject.inputIndex-1:0;
-									output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
+										output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
+										waitingObject.iterationCount = -1;
 									
-									waitingObject.iterationCount = -1;
 								}
 							}
 						}
