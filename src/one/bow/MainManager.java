@@ -25,24 +25,28 @@ public class MainManager {
 		{ 1,1 }, { 1,1, 0 } };//success
 	 */
 	
-	final int[][] input = new int[][] { { 1,spare }, { 1,1 }, { strike,strikeBuddy }, { 1,1 },
+	/*final int[][] input = new int[][] { { 1,spare }, { 1,1 }, { strike,strikeBuddy }, { 1,1 },
 		{ 1,1 }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 1,1 },
-		{ 1,1 }, { 1,1, 0 } };
+		{ 1,1 }, { 1,1, 0 } };//works
+	 */
+	/*final int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,spare }, { 5,spare },
+		{ strike,strikeBuddy }, { 0,1 }, { 7,spare }, { 6,spare },
+		{ strike,strikeBuddy }, { 2,spare,6 } };//ERROR==> Shows 133 as final score
+	 */
+	/*final int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
+		{ strike,strikeBuddy }, { 7,0 }, { 9,spare }, { 8,spare },
+		{ strike,strikeBuddy }, { 9,spare,1} };//ERROR>- shows 168 as final score
+	 */
+	
+	final int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { 1,1 },
+		{ 9 , 0  }, { 8,0 }, {8,0 }, { 5,0 },
+		{ 9,0 }, { 9,spare,6} };//ERROR >= Shows final score as 96, were as I got 105
 		
 	int[][] output = new int[input.length][1];
 
 	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
 
-	boolean shouldWaitForSpare = false;
-
-	int spareWaitIndex = -1;
-	int spareScoreLast = -1;
-
-	int strikeWaitIndex = -1;
-	int strikeScoreLast = -1;
-	int columsToConsider = 0;
 	
-	int localSum = -1;
 
 	public static void main(String[] args) {
 		new MainManager();
@@ -50,9 +54,17 @@ public class MainManager {
 
 	public MainManager() {
 
-		// SCORE COUNTING MANIPULATION DONE
 		// WORKS FOR CONTINUOUS STRIKES,SPARES AS WELL. CORNER CASE NEED TO POLISH
+		// UT PENDING
 		
+		boolean shouldWaitForSpare = false;
+		int spareWaitIndex = -1;
+		int spareScoreLast = -1;
+		int strikeScoreLast = -1;
+		int columsToConsider = 0;
+		int localSum = -1;
+		
+		//Outer array traversal
 		for (int row = 0; row < input.length; row++) {
 			localSum = 0;
 			if (row != 9) {
@@ -60,6 +72,8 @@ public class MainManager {
 			} else {
 				columsToConsider = 3;
 			}
+
+			//Inner array traversal
 			for (int col = 0; col < columsToConsider; col++) {
 
 				int currentVal = input[row][col];
@@ -108,7 +122,7 @@ public class MainManager {
 					int previousIndex= spareWaitIndex-1>0?spareWaitIndex-1:0;
 					output[spareWaitIndex][0] = spareScoreLast+ output[previousIndex][0];
 					
-					// reset the indexes
+					// reset the spare indexes
 					spareScoreLast = -1;
 					spareWaitIndex = -1;
 					localSum = 0;
@@ -137,8 +151,7 @@ public class MainManager {
 					case strike:
 
 						strikeScoreLast = 10;
-						strikeWaitIndex = row;
-
+						
 						if (strikeWaitingList.size() > 0) {
 							boolean isValueAvailable = false;
 							for (int i = 0; i < strikeWaitingList.size(); i++) {
