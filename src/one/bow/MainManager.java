@@ -9,9 +9,9 @@ import javax.swing.text.StyledEditorKit;
 
 public class MainManager {
 
-	final int strike = 10;
-	final int spare = -10;
-	final int strikeBuddy = -4;
+	private static final int strike = 10;
+	private static final int spare = -10;
+	private static final int strikeBuddy = -4;
 
 	// int[][] input = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
@@ -146,12 +146,16 @@ public class MainManager {
 						int localRow = row;
 						//To consider if waiting list index is having last element
 						//To consider if waiting list index is having object of row-1 th and row-2 th object 
-						if ((localRow == (input.length - 1))
+						if ( 	(waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1)
+								&&
+								((localRow == (input.length - 1))
 								||
 								(waitingObject.inputIndex == (localRow - 1))
-										|| (waitingObject.inputIndex == (localRow - 2))) {
+								|| 
+								(waitingObject.inputIndex == (localRow - 2))
+								)
+								) {
 							//Check if object's iteration count is completed
-							if (waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1) {
 								
 								int presentValLocal = currentVal;
 								if (currentVal == spare) {
@@ -174,7 +178,6 @@ public class MainManager {
 									output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
 									waitingObject.iterationCount = -1;									
 								}
-							}
 						}
 					}
 				}
@@ -271,6 +274,10 @@ public class MainManager {
 	
 		return isExceptionCaused;
 	}
+	
+	/**
+	 * Constructor
+	 */
 	public MainManager() {}
 	
 	/**
@@ -297,10 +304,10 @@ public class MainManager {
 	 */
 	private class WaitingObject {
 
-		public int inputIndex;
-		public int liveScore;
-		public int iterationCount;
-		public int lastAddedValue;
+		private int inputIndex;
+		private int liveScore;
+		private int iterationCount;
+		private int lastAddedValue;
 
 	}
 
