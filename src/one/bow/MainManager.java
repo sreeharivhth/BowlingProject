@@ -65,9 +65,14 @@ public class MainManager {
 		{ 8 , 1 }, { 9, spare }, {	strike,strikeBuddy }, { 7 , spare },
 		{ 7 , spare }, { strike , 5 , 4} };*///I got 187, game got 180??? ERROR
 		
-	int[][] input = new int[][] { { strike,strikeBuddy  }, { 9,0 }, { 7,spare }, { strike,strikeBuddy  },
+	/*int[][] input = new int[][] { { strike,strikeBuddy  }, { 9,0 }, { 7,spare }, { strike,strikeBuddy  },
 		{ strike,strikeBuddy  }, { 7, 0 }, { 9, spare }, { 8 , spare },
 		{ strike,strikeBuddy  }, { 9 , spare , 1} };//Got 177, game got 168
+	 */
+	
+	int[][] input = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
+		{ 1,0  }, { 1,0  }, { 1,0  }, { 1,0  },
+		{ 1,0  }, { 1, 0 , 1} };
 		
 	int[][] output = new int[input.length][1];
 
@@ -98,6 +103,11 @@ public class MainManager {
 				columsToConsider = 2;
 			} else {
 				columsToConsider = 3;
+				WaitingObject waitingNinthObject = new WaitingObject();
+				waitingNinthObject.inputIndex=9;
+				waitingNinthObject.iterationCount=3;
+				waitingNinthObject.liveScore=0;
+				strikeWaitingList.add(waitingNinthObject);
 			}
 
 			//Inner array traversal
@@ -116,15 +126,17 @@ public class MainManager {
 						WaitingObject waitingObject = strikeWaitingList.get(i);
 						// Check if waiting object's inputIndex is
 						int localRow = row;
-						if ((localRow == (input.length - 1))
-								|| /* This is for special case scenario */
+						/*if ((localRow == (input.length - 1))
+								|| 
 								((waitingObject.inputIndex == (localRow - 1))
+										|| (waitingObject.inputIndex == (localRow - 2)))) {*/
+						if (((waitingObject.inputIndex == (localRow - 1))
 										|| (waitingObject.inputIndex == (localRow - 2)))) {
 							if (waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1) {
 								
-								if(waitingObject.inputIndex==9){
+								/*if(waitingObject.inputIndex==9){
 									continue;
-								}
+								}*/
 								
 								int presentValLocal = currentVal;
 								if (currentVal == spare) {
@@ -166,7 +178,7 @@ public class MainManager {
 						}
 						localSum = localSum + localCurrent;	
 					}*/
-					boolean ninthIndexPresent=false;
+					/*boolean ninthIndexPresent=false;
 					WaitingObject waitingNinthObject=null;
 					for (int i = 0; i < strikeWaitingList.size(); i++) {
 						WaitingObject waitingObject = strikeWaitingList.get(i);
@@ -193,7 +205,8 @@ public class MainManager {
 					waitingNinthObject.iterationCount=--waitingNinthObject.iterationCount;
 					if(waitingNinthObject.iterationCount==0){
 						output[waitingNinthObject.inputIndex][0] = waitingNinthObject.liveScore + output[waitingNinthObject.inputIndex-1][0];
-					}
+					}*/
+					System.out.println("Last Column already handled!");
 				} else {
 					switch (currentVal) {
 
