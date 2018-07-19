@@ -130,8 +130,10 @@ public class MainManager {
 								|| 
 								((waitingObject.inputIndex == (localRow - 1))
 										|| (waitingObject.inputIndex == (localRow - 2)))) {*/
-						if (((waitingObject.inputIndex == (localRow - 1))
-										|| (waitingObject.inputIndex == (localRow - 2)))) {
+						if ((localRow == (input.length - 1))
+								||
+								(waitingObject.inputIndex == (localRow - 1))
+										|| (waitingObject.inputIndex == (localRow - 2))) {
 							if (waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1) {
 								
 								/*if(waitingObject.inputIndex==9){
