@@ -136,11 +136,9 @@ public class MainManager {
 																								// count
 								if (waitingObject.iterationCount == 0) {
 									// update the score
-									
 									int previousIndex= waitingObject.inputIndex-1>0?waitingObject.inputIndex-1:0;
-										output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
-										waitingObject.iterationCount = -1;
-									
+									output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
+									waitingObject.iterationCount = -1;									
 								}
 							}
 						}
@@ -186,11 +184,10 @@ public class MainManager {
 						waitingNinthObject.liveScore=0;
 						strikeWaitingList.add(waitingNinthObject);
 					}
-					if(currentVal==strike){
-						waitingNinthObject.liveScore = waitingNinthObject.liveScore+currentVal;
-					}else if(currentVal==spare){
+					if(currentVal==spare){
 						waitingNinthObject.liveScore = 10;
 					}else{
+						//For both strike and normal score , add the current value
 						waitingNinthObject.liveScore = waitingNinthObject.liveScore+currentVal;
 					}
 					waitingNinthObject.iterationCount=--waitingNinthObject.iterationCount;
