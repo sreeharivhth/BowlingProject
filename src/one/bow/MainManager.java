@@ -16,28 +16,28 @@ public class MainManager {
 	// int[][] input = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
 
-	/*final int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
+	int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
 								{ strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
 								{ strike,strikeBuddy }, { strike, strike, strike } };//success
-	 */
+	 
 	
-	/*final int[][] input = new int[][] { { 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
+	/*int[][] input = new int[][] { { 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
 		{ 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
-		{ 1,1 }, { 1,1, 0 } };//success
-	 */
+		{ 1,1 }, { 1,1, 0 } };//success 20
+*/		
 	
-	/*final int[][] input = new int[][] { { 1,spare }, { 1,1 }, { strike,strikeBuddy }, { 1,1 },
+	/*int[][] input = new int[][] { { 1,spare }, { 1,1 }, { strike,strikeBuddy }, { 1,1 },
 		{ 1,1 }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 1,1 },
-		{ 1,1 }, { 1,1, 0 } };//works
-	 */
+		{ 1,1 }, { 1,1, 0 } };//Success 68
+	 */	
 	/*int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,spare }, { 5,spare },
 		{ strike,strikeBuddy }, { 0,1 }, { 7,spare }, { 6,spare },
-		{ strike,strikeBuddy }, { 2,spare,6 } };*///ERROR==> Shows 133 as final score
-	 
-	/*final int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
+		{ strike,strikeBuddy }, { 2,spare,6 } };//Success 133 
+*/	 
+	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
 		{ strike,strikeBuddy }, { 7,0 }, { 9,spare }, { 8,spare },
-		{ strike,strikeBuddy }, { 9,spare,1} };//ERROR>- shows 168 as final score
-	 */
+		{ strike,strikeBuddy }, { 9,spare,1} };//Success 168 as final score
+*/	
 	
 	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
@@ -49,8 +49,8 @@ public class MainManager {
 */	
 	/*int[][] input = new int[][] { { 8,0 }, { 6,0 }, { strike,strikeBuddy }, { strike,strikeBuddy },
 		{ strike,strikeBuddy }, { 8,0 }, {strike,strikeBuddy}, { 6,1 },
-		{ strike,strikeBuddy }, { strike,7,2} };*///ERROR >= Shows final score as 96, were as I got 105
-		
+		{ strike,strikeBuddy }, { strike,7,2} };//Correct 168
+*/		
 	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 8,1 }, { 5,4 }, { strike,strikeBuddy },
 		{ 8 , 1 }, { 7, 2 }, {	6 , 3 }, { 7, 2 },
 		{ 8,spare }, { strike,strike,9} };//Correct 141
@@ -63,8 +63,8 @@ public class MainManager {
 	
 	/*int[][] input = new int[][] { { 9,spare }, { 7,spare }, { 9,spare }, { strike,strikeBuddy  },
 		{ 8 , 1 }, { 9, spare }, {	strike,strikeBuddy }, { 7 , spare },
-		{ 7 , spare }, { strike , 5 , 4} };*///I got 187, game got 180??? ERROR
-		
+		{ 7 , spare }, { strike , 5 , 4} };//Success 180
+*/		
 	/*int[][] input = new int[][] { { strike,strikeBuddy  }, { 9,0 }, { 7,spare }, { strike,strikeBuddy  },
 		{ strike,strikeBuddy  }, { 7, 0 }, { 9, spare }, { 8 , spare },
 		{ strike,strikeBuddy  }, { 9 , spare , 1} };//Got 177, game got 168
@@ -78,10 +78,25 @@ public class MainManager {
 		{ strike,strikeBuddy }, { 1,0  }, { 1,spare  }, { 1,0  },
 		{ 1,0  }, { 1, 0 , 0} }; WORKS*/
 	
-	int[][] input = new int[][] { { 1,spare }, { 4,spare }, { 2,0 }, { strike,strikeBuddy  },
+	/*int[][] input = new int[][] { { 1,spare }, { 4,spare }, { 2,0 }, { strike,strikeBuddy  },
 		{ 5,spare }, { 8,0  }, { 8,spare  }, { 3,4  },
 		{ strike,strikeBuddy  }, { strike, strike , strike} };//correct 154
-		
+*/		
+	
+	/*int[][] input = new int[][] { { 3,spare }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 7,1 },
+		{ 0,3 }, { strike,strikeBuddy }, { 9,spare  }, { 4,5  },
+		{ strike,strikeBuddy  }, { 3, spare , 1} }; //correct 150*/
+	
+	
+	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 8,1 }, { 5,4 }, { strike,strikeBuddy },
+		{ 8,1 }, { 7,2 }, { 6,3 }, { 7,2  },
+		{ 8,spare }, { strike, strike ,9} };//correct 141
+	 */
+	
+	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 7,2 }, { strike,strikeBuddy  }, { 6,3 },
+		{ 8,spare }, { 7,0 }, { 7,spare }, { 9,0  },
+		{ 9,0 }, { 9 , spare ,9} };//Correct 136
+*/	
 	int[][] output = new int[input.length][1];
 
 	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
