@@ -11,6 +11,10 @@ public class MainManagerTest {
 	
 	
 	MainManager mainManagerObj;
+	private static final int STRIKE = 10;
+	private static final int SPARE = -10;
+	private static final int STRIKE_BUDDY = -4;
+	
 	@Before
 	public void init() {
 		mainManagerObj=new MainManager();
@@ -29,14 +33,36 @@ public class MainManagerTest {
 			
 		int[][] outputArray = new int[inputArray.length][1];
 		
-		mainManagerObj.input = inputArray;
+		/*mainManagerObj.input = inputArray;
 		assertFalse(mainManagerObj.calculateScores());		
 		
 		outputArray = mainManagerObj.output;
 		int[][]outputCheckArray=new int[][]{{19}, {28}, {39}, {41}, {50}, {58}, {66}, {71}, {80}, {116}};
 		
 		//[[19], [28], [39], [41], [50], [58], [66], [71], [80], [116]]
-		assertArrayEquals(outputCheckArray, outputArray);
+		assertArrayEquals(outputCheckArray, outputArray);*/
+		
+		
+		int[][] input2 = new int[][] { { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
+			{ STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
+			{ STRIKE,STRIKE_BUDDY }, { STRIKE, STRIKE, STRIKE } };//success
+			
+		int[][]output2= new int[][]{{30},{60},{90},{120},{150},{180},{210},{240},{270},{300}};
+		
+		mainManagerObj.input = input2;
+		assertFalse(mainManagerObj.calculateScores());
+		outputArray = mainManagerObj.output;
+		assertArrayEquals(output2, outputArray);
+		
+		int[][] input3 = new int[][] { { STRIKE,STRIKE_BUDDY }, { 9,0 }, { 7,SPARE }, { STRIKE,STRIKE_BUDDY },
+			{ STRIKE,STRIKE_BUDDY }, { 7,0 }, { 9,SPARE }, { 8,SPARE },
+			{ STRIKE,STRIKE_BUDDY }, { 9,SPARE,1} };
+		int[][]output3= new int[][]{{19},{28},{48},{75},{92},{99},{117},{137},{157},{168}};
+		
+		mainManagerObj.input = input3;
+		assertFalse(mainManagerObj.calculateScores());
+		System.arraycopy(outputArray, 0, mainManagerObj.output, 0, outputArray.length);
+		assertArrayEquals(output3, outputArray);
 		
 	}
 
