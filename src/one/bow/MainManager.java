@@ -70,9 +70,17 @@ public class MainManager {
 		{ strike,strikeBuddy  }, { 9 , spare , 1} };//Got 177, game got 168
 	 */
 	
-	int[][] input = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
+	/*int[][] input = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
 		{ 1,0  }, { 1,0  }, { 1,0  }, { 1,0  },
-		{ 1,0  }, { 1, 0 , 1} };
+		{ 1,0  }, { 1, 0 , 1} }; WORKS*/
+		
+	/*int[][] input = new int[][] { { 1,0 }, { strike,strikeBuddy }, { 1,0 }, { 1,0  },
+		{ strike,strikeBuddy }, { 1,0  }, { 1,spare  }, { 1,0  },
+		{ 1,0  }, { 1, 0 , 0} }; WORKS*/
+	
+	int[][] input = new int[][] { { 1,spare }, { 4,spare }, { 2,0 }, { strike,strikeBuddy  },
+		{ 5,spare }, { 8,0  }, { 8,spare  }, { 3,4  },
+		{ strike,strikeBuddy  }, { strike, strike , strike} };//correct 154
 		
 	int[][] output = new int[input.length][1];
 
@@ -84,6 +92,7 @@ public class MainManager {
 	}
 	
 	public boolean calculateScores() {
+		
 		boolean isExceptionCaused=false;
 
 		// PROBLEM OF COUNTING LAST FRAME , WORKS ONLY FOR LAST FRAME COMBINATIONS. DIDNT INCLUDED COMBINATIONS IN PREVIOUS FRAMES
@@ -99,14 +108,12 @@ public class MainManager {
 		//Outer array traversal
 		for (int row = 0; row < input.length; row++) {
 			localSum = 0;
+			
 			if (row != 9) {
 				columsToConsider = 2;
 			} else {
 				columsToConsider = 3;
-				WaitingObject waitingNinthObject = new WaitingObject();
-				waitingNinthObject.inputIndex=9;
-				waitingNinthObject.iterationCount=3;
-				waitingNinthObject.liveScore=0;
+				WaitingObject waitingNinthObject  = createWaitObject(row,columsToConsider,0,0);
 				strikeWaitingList.add(waitingNinthObject);
 			}
 
@@ -143,8 +150,13 @@ public class MainManager {
 								int presentValLocal = currentVal;
 								if (currentVal == spare) {
 									presentValLocal = 10;
+									waitingObject.liveScore = waitingObject.liveScore + presentValLocal - waitingObject.lastAddedValue;
+									waitingObject.lastAddedValue = presentValLocal;
+								}else{
+									waitingObject.liveScore = waitingObject.liveScore + presentValLocal;
+									waitingObject.lastAddedValue = presentValLocal;
 								}
-								waitingObject.liveScore = waitingObject.liveScore + presentValLocal;
+								
 								waitingObject.iterationCount = --waitingObject.iterationCount;// update
 																								// iteration
 																								// count
@@ -238,17 +250,11 @@ public class MainManager {
 							// available. So create new @WaitingObject and add
 							// to list
 							if (!isValueAvailable) {
-								WaitingObject waitingObject = new WaitingObject();
-								waitingObject.inputIndex = row;
-								waitingObject.iterationCount = 2;
-								waitingObject.liveScore = 10;
+								WaitingObject waitingObject = createWaitObject(row,columsToConsider,10,10);
 								strikeWaitingList.add(waitingObject);
 							}
 						} else {
-							WaitingObject waitingObject = new WaitingObject();
-							waitingObject.inputIndex = row;
-							waitingObject.iterationCount = 2;
-							waitingObject.liveScore = 10;
+							WaitingObject waitingObject = createWaitObject(row,columsToConsider,10,10);
 							strikeWaitingList.add(waitingObject);
 						}
 						break;
@@ -283,12 +289,22 @@ public class MainManager {
 		return isExceptionCaused;
 	}
 	public MainManager() {}
+	
+	private WaitingObject createWaitObject(int inputIndex,int iterationCount,int liveScore,int lastAdded){
+		WaitingObject waitingNinthObject = new WaitingObject();
+		waitingNinthObject.inputIndex=inputIndex;
+		waitingNinthObject.iterationCount=iterationCount;
+		waitingNinthObject.liveScore=liveScore;
+		waitingNinthObject.lastAddedValue=lastAdded;
+		return waitingNinthObject;
+	}
 
 	private class WaitingObject {
 
 		public int inputIndex;
 		public int liveScore;
 		public int iterationCount;
+		public int lastAddedValue;
 
 	}
 
