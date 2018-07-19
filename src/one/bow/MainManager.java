@@ -16,10 +16,10 @@ public class MainManager {
 	// int[][] input = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
 
-	int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
+	/*int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
 								{ strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
 								{ strike,strikeBuddy }, { strike, strike, strike } };//success
-	 
+*/	 
 	
 	/*int[][] input = new int[][] { { 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
 		{ 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
@@ -34,10 +34,10 @@ public class MainManager {
 		{ strike,strikeBuddy }, { 0,1 }, { 7,spare }, { 6,spare },
 		{ strike,strikeBuddy }, { 2,spare,6 } };//Success 133 
 */	 
-	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
+	int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
 		{ strike,strikeBuddy }, { 7,0 }, { 9,spare }, { 8,spare },
 		{ strike,strikeBuddy }, { 9,spare,1} };//Success 168 as final score
-*/	
+	
 	
 	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
@@ -59,7 +59,7 @@ public class MainManager {
 	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 7,2 }, { strike,strikeBuddy }, { 6 , 3 },
 		{ 8 , spare }, { 7, 0 }, {	7 , spare }, { 9 , 0 },
 		{ 9 , 0 }, { 9 ,spare,9} };//Correct 136
-	 */
+*/	 
 	
 	/*int[][] input = new int[][] { { 9,spare }, { 7,spare }, { 9,spare }, { strike,strikeBuddy  },
 		{ 8 , 1 }, { 9, spare }, {	strike,strikeBuddy }, { 7 , spare },
@@ -68,7 +68,7 @@ public class MainManager {
 	/*int[][] input = new int[][] { { strike,strikeBuddy  }, { 9,0 }, { 7,spare }, { strike,strikeBuddy  },
 		{ strike,strikeBuddy  }, { 7, 0 }, { 9, spare }, { 8 , spare },
 		{ strike,strikeBuddy  }, { 9 , spare , 1} };//Got 177, game got 168
-	 */
+*/	 
 	
 	/*int[][] input = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
 		{ 1,0  }, { 1,0  }, { 1,0  }, { 1,0  },
@@ -91,7 +91,7 @@ public class MainManager {
 	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 8,1 }, { 5,4 }, { strike,strikeBuddy },
 		{ 8,1 }, { 7,2 }, { 6,3 }, { 7,2  },
 		{ 8,spare }, { strike, strike ,9} };//correct 141
-	 */
+*/	 
 	
 	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 7,2 }, { strike,strikeBuddy  }, { 6,3 },
 		{ 8,spare }, { 7,0 }, { 7,spare }, { 9,0  },
@@ -109,20 +109,16 @@ public class MainManager {
 	public boolean calculateScores() {
 		
 		boolean isExceptionCaused=false;
-
-		// PROBLEM OF COUNTING LAST FRAME , WORKS ONLY FOR LAST FRAME COMBINATIONS. DIDNT INCLUDED COMBINATIONS IN PREVIOUS FRAMES
-		// UT PENDING
-		
 		boolean shouldWaitForSpare = false;
 		int spareWaitIndex = -1;
 		int spareScoreLast = -1;
 		int strikeScoreLast = -1;
 		int columsToConsider = 0;
-		int localSum = -1;
 		
-		//Outer array traversal
+		//Outer array traversal (row)
 		for (int row = 0; row < input.length; row++) {
-			localSum = 0;
+			
+			int localSum = 0;
 			
 			if (row != 9) {
 				columsToConsider = 2;
@@ -132,7 +128,7 @@ public class MainManager {
 				strikeWaitingList.add(waitingNinthObject);
 			}
 
-			//Inner array traversal
+			//Inner array traversal (columns)
 			for (int col = 0; col < columsToConsider; col++) {
 
 				int currentVal = input[row][col];
@@ -146,28 +142,25 @@ public class MainManager {
 				if (strikeWaitingList.size() > 0 ) {
 					for (int i = 0; i < strikeWaitingList.size(); i++) {
 						WaitingObject waitingObject = strikeWaitingList.get(i);
-						// Check if waiting object's inputIndex is
+
 						int localRow = row;
-						/*if ((localRow == (input.length - 1))
-								|| 
-								((waitingObject.inputIndex == (localRow - 1))
-										|| (waitingObject.inputIndex == (localRow - 2)))) {*/
+						//To consider if waiting list index is having last element
+						//To consider if waiting list index is having object of row-1 th and row-2 th object 
 						if ((localRow == (input.length - 1))
 								||
 								(waitingObject.inputIndex == (localRow - 1))
 										|| (waitingObject.inputIndex == (localRow - 2))) {
+							//Check if object's iteration count is completed
 							if (waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1) {
-								
-								/*if(waitingObject.inputIndex==9){
-									continue;
-								}*/
 								
 								int presentValLocal = currentVal;
 								if (currentVal == spare) {
+									//For spare, reduce last score and add current value 
 									presentValLocal = 10;
 									waitingObject.liveScore = waitingObject.liveScore + presentValLocal - waitingObject.lastAddedValue;
 									waitingObject.lastAddedValue = presentValLocal;
 								}else{
+									//If not, then add current value to last score
 									waitingObject.liveScore = waitingObject.liveScore + presentValLocal;
 									waitingObject.lastAddedValue = presentValLocal;
 								}
@@ -176,7 +169,7 @@ public class MainManager {
 																								// iteration
 																								// count
 								if (waitingObject.iterationCount == 0) {
-									// update the score
+									// update the score if iteration is finished to last index
 									int previousIndex= waitingObject.inputIndex-1>0?waitingObject.inputIndex-1:0;
 									output[waitingObject.inputIndex][0] = waitingObject.liveScore + output[previousIndex][0];	
 									waitingObject.iterationCount = -1;									
@@ -187,9 +180,10 @@ public class MainManager {
 				}
 
 				if (shouldWaitForSpare) {
+					//updating spare score
 					spareScoreLast = spareScoreLast + currentVal;
 					shouldWaitForSpare = false;
-					// put value to last index
+					// put value to last index of output
 					int previousIndex= spareWaitIndex-1>0?spareWaitIndex-1:0;
 					output[spareWaitIndex][0] = spareScoreLast+ output[previousIndex][0];
 					
@@ -198,49 +192,15 @@ public class MainManager {
 					spareWaitIndex = -1;
 					localSum = 0;
 				}
-				/* This is for special case scenario */
-				if (row == 9) {
-					/*if(currentVal!=-1){
-						int localCurrent= currentVal;
-						if(currentVal==spare || currentVal==strike){
-							localCurrent=10;
-						}
-						localSum = localSum + localCurrent;	
-					}*/
-					/*boolean ninthIndexPresent=false;
-					WaitingObject waitingNinthObject=null;
-					for (int i = 0; i < strikeWaitingList.size(); i++) {
-						WaitingObject waitingObject = strikeWaitingList.get(i);
-						int index = waitingObject.inputIndex;
-						if(index==9){
-							ninthIndexPresent=true;
-							waitingNinthObject=waitingObject;
-							break;
-						}
-					}
-					if(!ninthIndexPresent){
-						waitingNinthObject = new WaitingObject();
-						waitingNinthObject.inputIndex=9;
-						waitingNinthObject.iterationCount=3;
-						waitingNinthObject.liveScore=0;
-						strikeWaitingList.add(waitingNinthObject);
-					}
-					if(currentVal==spare){
-						waitingNinthObject.liveScore = 10;
-					}else{
-						//For both strike and normal score , add the current value
-						waitingNinthObject.liveScore = waitingNinthObject.liveScore+currentVal;
-					}
-					waitingNinthObject.iterationCount=--waitingNinthObject.iterationCount;
-					if(waitingNinthObject.iterationCount==0){
-						output[waitingNinthObject.inputIndex][0] = waitingNinthObject.liveScore + output[waitingNinthObject.inputIndex-1][0];
-					}*/
-					System.out.println("Last Column already handled!");
-				} else {
+				
+				//If current row is not the last one, then proceed
+				if(row!=9)
+				{
 					switch (currentVal) {
 
 					case spare:
 
+						//For spare, keep last score as 10 and update waiting index
 						shouldWaitForSpare = true;
 						spareScoreLast = 10;
 						spareWaitIndex = row;
@@ -250,61 +210,77 @@ public class MainManager {
 					case strike:
 
 						strikeScoreLast = 10;
-						
+						//Iterate list and check if object is already available
+						//If then update the score
 						if (strikeWaitingList.size() > 0) {
-							boolean isValueAvailable = false;
-							for (int i = 0; i < strikeWaitingList.size(); i++) {
-								WaitingObject waitingObject = strikeWaitingList.get(i);
-								if (waitingObject.inputIndex == row) {
-									isValueAvailable = true;
-									waitingObject.liveScore = waitingObject.liveScore + strikeScoreLast;// update
-																										// strike
+								boolean isValueAvailable = false;
+								for (int i = 0; i < strikeWaitingList.size(); i++) {
+									WaitingObject waitingObject = strikeWaitingList.get(i);
+									if (waitingObject.inputIndex == row) {
+										isValueAvailable = true;
+										waitingObject.liveScore = waitingObject.liveScore + strikeScoreLast;// update
+																											// strike
+									}
 								}
-							}
-							// Iterated over array, element with index not
-							// available. So create new @WaitingObject and add
-							// to list
-							if (!isValueAvailable) {
+								// Iterated over array, element with index not
+								// available. So create new @WaitingObject and add
+								// to list
+								if (!isValueAvailable) {
+									WaitingObject waitingObject = createWaitObject(row,columsToConsider,10,10);
+									strikeWaitingList.add(waitingObject);
+								}
+							} 
+							else {
+								//List is empty , create object and add to list
 								WaitingObject waitingObject = createWaitObject(row,columsToConsider,10,10);
 								strikeWaitingList.add(waitingObject);
 							}
-						} else {
-							WaitingObject waitingObject = createWaitObject(row,columsToConsider,10,10);
-							strikeWaitingList.add(waitingObject);
-						}
 						break;
 
 					default:
+						//If not coming under both cases, just add the current value to local sum
 						localSum = localSum + currentVal;
 						break;
 					}
-				}
-
-				int checkPoint = columsToConsider - 1;
-
-				if (col == checkPoint && row!=9) {
-					if (spareScoreLast != -1 && (false == shouldWaitForSpare)) {
-						int previousIndex= row-1 >0 ?row-1:0;
-						output[row][0] = spareScoreLast+output[previousIndex][0];
-						localSum = 0;
-						spareWaitIndex = row;
-					} else if (shouldWaitForSpare) {
-						// don't add sum, keep values in waiting list only
-						continue;
-					} else {
-						int previousIndex= row-1 >0 ?row-1:0;
-						output[row][0] = localSum+output[previousIndex][0];
-						localSum = 0;	
+					
+					int checkPoint = columsToConsider - 1;
+					if (col == checkPoint) {
+						
+						if (spareScoreLast != -1 && (false == shouldWaitForSpare)) {
+							//Update spare's score to last index + spare last score
+							int previousIndex= row-1 >0 ?row-1:0;
+							output[row][0] = spareScoreLast+output[previousIndex][0];
+							localSum = 0;
+							spareWaitIndex = row;
+						} else if (shouldWaitForSpare) {
+							// don't add sum, keep values in waiting list only
+							continue;
+						} else {
+							//Update local score 
+							int previousIndex= row-1 >0 ?row-1:0;
+							output[row][0] = localSum+output[previousIndex][0];
+							localSum = 0;	
+						}
 					}
 				}
-			}
+			}//End of inner array iteration
 		}
+		//End of outer array iteration
+		
 		printOutput();
 	
 		return isExceptionCaused;
 	}
 	public MainManager() {}
 	
+	/**
+	 * Create Waiting object , which is used to track strikes and last index scores
+	 * @param inputIndex
+	 * @param iterationCount
+	 * @param liveScore
+	 * @param lastAdded
+	 * @return
+	 */
 	private WaitingObject createWaitObject(int inputIndex,int iterationCount,int liveScore,int lastAdded){
 		WaitingObject waitingNinthObject = new WaitingObject();
 		waitingNinthObject.inputIndex=inputIndex;
@@ -314,6 +290,11 @@ public class MainManager {
 		return waitingNinthObject;
 	}
 
+	/**
+	 * Object for holding waiting data in bowling 
+	 * @author Sreehari.KV
+	 *
+	 */
 	private class WaitingObject {
 
 		public int inputIndex;
