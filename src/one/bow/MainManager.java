@@ -1,24 +1,19 @@
 package one.bow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-
-import javax.swing.text.StyledEditorKit;
 
 public class MainManager {
 
-	private static final int strike = 10;
-	private static final int spare = -10;
-	private static final int strikeBuddy = -4;
+	private static final int STRIKE = 10;
+	private static final int SPARE = -10;
+	private static final int STRIKE_BUDDY = -4;
 
 	// int[][] input = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
 
-	/*int[][] input = new int[][] { { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
-								{ strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy }, { strike,strikeBuddy },
-								{ strike,strikeBuddy }, { strike, strike, strike } };//success
+	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
+								{ STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
+								{ STRIKE,STRIKE_BUDDY }, { STRIKE, STRIKE, STRIKE } };//success
 */	 
 	
 	/*int[][] input = new int[][] { { 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
@@ -26,81 +21,85 @@ public class MainManager {
 		{ 1,1 }, { 1,1, 0 } };//success 20
 */		
 	
-	/*int[][] input = new int[][] { { 1,spare }, { 1,1 }, { strike,strikeBuddy }, { 1,1 },
-		{ 1,1 }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 1,1 },
+	/*int[][] input = new int[][] { { 1,SPARE }, { 1,1 }, { STRIKE,STRIKE_BUDDY }, { 1,1 },
+		{ 1,1 }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { 1,1 },
 		{ 1,1 }, { 1,1, 0 } };//Success 68
 	 */	
-	/*int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,spare }, { 5,spare },
-		{ strike,strikeBuddy }, { 0,1 }, { 7,spare }, { 6,spare },
-		{ strike,strikeBuddy }, { 2,spare,6 } };//Success 133 
+	/*int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,SPARE }, { 5,SPARE },
+		{ STRIKE,STRIKE_BUDDY }, { 0,1 }, { 7,SPARE }, { 6,SPARE },
+		{ STRIKE,STRIKE_BUDDY }, { 2,SPARE,6 } };//Success 133 
 */	 
-	int[][] input = new int[][] { { strike,strikeBuddy }, { 9,0 }, { 7,spare }, { strike,strikeBuddy },
-		{ strike,strikeBuddy }, { 7,0 }, { 9,spare }, { 8,spare },
-		{ strike,strikeBuddy }, { 9,spare,1} };//Success 168 as final score
+	int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 9,0 }, { 7,SPARE }, { STRIKE,STRIKE_BUDDY },
+		{ STRIKE,STRIKE_BUDDY }, { 7,0 }, { 9,SPARE }, { 8,SPARE },
+		{ STRIKE,STRIKE_BUDDY }, { 9,SPARE,1} };//Success 168 as final score
 	
 	
 	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
-		{ 9,0 }, { strike,5,4} };//WORKS
+		{ 9,0 }, { STRIKE,5,4} };//WORKS
 	 */
 	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
-		{ 1,spare }, { strike,1,1} };// WORKING
+		{ 1,SPARE }, { STRIKE,1,1} };// WORKING 68
 */	
-	/*int[][] input = new int[][] { { 8,0 }, { 6,0 }, { strike,strikeBuddy }, { strike,strikeBuddy },
-		{ strike,strikeBuddy }, { 8,0 }, {strike,strikeBuddy}, { 6,1 },
-		{ strike,strikeBuddy }, { strike,7,2} };//Correct 168
+	/*int[][] input = new int[][] { { 8,0 }, { 6,0 }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
+		{ STRIKE,STRIKE_BUDDY }, { 8,0 }, {STRIKE,STRIKE_BUDDY}, { 6,1 },
+		{ STRIKE,STRIKE_BUDDY }, { STRIKE,7,2} };//Correct 168
 */		
-	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 8,1 }, { 5,4 }, { strike,strikeBuddy },
+	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 8,1 }, { 5,4 }, { STRIKE,STRIKE_BUDDY },
 		{ 8 , 1 }, { 7, 2 }, {	6 , 3 }, { 7, 2 },
-		{ 8,spare }, { strike,strike,9} };//Correct 141
-	 */
-	
-	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 7,2 }, { strike,strikeBuddy }, { 6 , 3 },
-		{ 8 , spare }, { 7, 0 }, {	7 , spare }, { 9 , 0 },
-		{ 9 , 0 }, { 9 ,spare,9} };//Correct 136
+		{ 8,SPARE }, { STRIKE,STRIKE,9} };//Correct 141
 */	 
 	
-	/*int[][] input = new int[][] { { 9,spare }, { 7,spare }, { 9,spare }, { strike,strikeBuddy  },
-		{ 8 , 1 }, { 9, spare }, {	strike,strikeBuddy }, { 7 , spare },
-		{ 7 , spare }, { strike , 5 , 4} };//Success 180
+	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 7,2 }, { STRIKE,STRIKE_BUDDY }, { 6 , 3 },
+		{ 8 , SPARE }, { 7, 0 }, {	7 , SPARE }, { 9 , 0 },
+		{ 9 , 0 }, { 9 ,SPARE,9} };//Correct 136
+*/	 
+	
+	/*int[][] input = new int[][] { { 9,SPARE }, { 7,SPARE }, { 9,SPARE }, { STRIKE,STRIKE_BUDDY  },
+		{ 8 , 1 }, { 9, SPARE }, {	STRIKE,STRIKE_BUDDY }, { 7 , SPARE },
+		{ 7 , SPARE }, { STRIKE , 5 , 4} };//Success 180
 */		
-	/*int[][] input = new int[][] { { strike,strikeBuddy  }, { 9,0 }, { 7,spare }, { strike,strikeBuddy  },
-		{ strike,strikeBuddy  }, { 7, 0 }, { 9, spare }, { 8 , spare },
-		{ strike,strikeBuddy  }, { 9 , spare , 1} };//Got 177, game got 168
-*/	 
+	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY  }, { 9,0 }, { 7,SPARE }, { STRIKE,STRIKE_BUDDY  },
+		{ STRIKE,STRIKE_BUDDY  }, { 7, 0 }, { 9, SPARE }, { 8 , SPARE },
+		{ STRIKE,STRIKE_BUDDY  }, { 9 , SPARE , 1} };//Got 177, game got 168
+	 */
 	
 	/*int[][] input = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
 		{ 1,0  }, { 1,0  }, { 1,0  }, { 1,0  },
-		{ 1,0  }, { 1, 0 , 1} }; WORKS*/
-		
-	/*int[][] input = new int[][] { { 1,0 }, { strike,strikeBuddy }, { 1,0 }, { 1,0  },
-		{ strike,strikeBuddy }, { 1,0  }, { 1,spare  }, { 1,0  },
+		{ 1,0  }, { 1, 0 , 1} }; //WORKS
+		*/
+	/*int[][] input = new int[][] { { 1,0 }, { STRIKE,STRIKE_BUDDY }, { 1,0 }, { 1,0  },
+		{ STRIKE,STRIKE_BUDDY }, { 1,0  }, { 1,SPARE  }, { 1,0  },
 		{ 1,0  }, { 1, 0 , 0} }; WORKS*/
 	
-	/*int[][] input = new int[][] { { 1,spare }, { 4,spare }, { 2,0 }, { strike,strikeBuddy  },
-		{ 5,spare }, { 8,0  }, { 8,spare  }, { 3,4  },
-		{ strike,strikeBuddy  }, { strike, strike , strike} };//correct 154
-*/		
+	/*int[][] input = new int[][] { { 1,SPARE }, { 4,SPARE }, { 2,0 }, { STRIKE,STRIKE_BUDDY  },
+		{ 5,SPARE }, { 8,0  }, { 8,SPARE  }, { 3,4  },
+		{ STRIKE,STRIKE_BUDDY  }, { STRIKE, STRIKE , STRIKE} };//correct 154
+		*/
 	
-	/*int[][] input = new int[][] { { 3,spare }, { strike,strikeBuddy }, { strike,strikeBuddy }, { 7,1 },
-		{ 0,3 }, { strike,strikeBuddy }, { 9,spare  }, { 4,5  },
-		{ strike,strikeBuddy  }, { 3, spare , 1} }; //correct 150*/
+	/*int[][] input = new int[][] { { 3,SPARE }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { 7,1 },
+		{ 0,3 }, { STRIKE,STRIKE_BUDDY }, { 9,SPARE  }, { 4,5  },
+		{ STRIKE,STRIKE_BUDDY  }, { 3, SPARE , 1} }; //correct 150*/
 	
 	
-	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 8,1 }, { 5,4 }, { strike,strikeBuddy },
+	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 8,1 }, { 5,4 }, { STRIKE,STRIKE_BUDDY },
 		{ 8,1 }, { 7,2 }, { 6,3 }, { 7,2  },
-		{ 8,spare }, { strike, strike ,9} };//correct 141
+		{ 8,SPARE }, { STRIKE, STRIKE ,9} };//correct 141
 */	 
 	
-	/*int[][] input = new int[][] { { strike,strikeBuddy }, { 7,2 }, { strike,strikeBuddy  }, { 6,3 },
-		{ 8,spare }, { 7,0 }, { 7,spare }, { 9,0  },
-		{ 9,0 }, { 9 , spare ,9} };//Correct 136
+	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 7,2 }, { STRIKE,STRIKE_BUDDY  }, { 6,3 },
+		{ 8,SPARE }, { 7,0 }, { 7,SPARE }, { 9,0  },
+		{ 9,0 }, { 9 , SPARE ,9} };//Correct 136
 */	
 	int[][] output = new int[input.length][1];
 
-	ArrayList<WaitingObject> strikeWaitingList = new ArrayList<WaitingObject>();
-
+	private ArrayList<WaitingObject> strikeWaitingList = new ArrayList<>();
+	private boolean isExceptionCaused=false;
+	private boolean shouldWaitForSpare = false;
+	private int spareWaitIndex = -1;
+	private int spareScoreLast = -1;
+	
 	
 	public static void main(String[] args) {
 		new MainManager().calculateScores();
@@ -108,12 +107,8 @@ public class MainManager {
 	
 	public boolean calculateScores() {
 		
-		boolean isExceptionCaused=false;
-		boolean shouldWaitForSpare = false;
-		int spareWaitIndex = -1;
-		int spareScoreLast = -1;
-		int strikeScoreLast = -1;
 		int columsToConsider = 0;
+		int strikeScoreLast = -1;
 		
 		//Outer array traversal (row)
 		for (int row = 0; row < input.length; row++) {
@@ -134,32 +129,29 @@ public class MainManager {
 				int currentVal = input[row][col];
 				System.out.println(currentVal);
 
-				if (currentVal == strikeBuddy) {
+				if (currentVal == STRIKE_BUDDY) {
 					continue;
 				}
 
 				// Iterate over @strikeWaitingList
-				if (strikeWaitingList.size() > 0 ) {
+				if (!strikeWaitingList.isEmpty()) {
 					for (int i = 0; i < strikeWaitingList.size(); i++) {
 						WaitingObject waitingObject = strikeWaitingList.get(i);
 
 						int localRow = row;
+						
 						//To consider if waiting list index is having last element
 						//To consider if waiting list index is having object of row-1 th and row-2 th object 
-						if ( 	(waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1)
-								&&
-								((localRow == (input.length - 1))
-								||
-								(waitingObject.inputIndex == (localRow - 1))
-								|| 
-								(waitingObject.inputIndex == (localRow - 2))
-								)
-								) {
+						boolean condiTwo = waitingObject.inputIndex == localRow-1;
+						boolean condiThree = waitingObject.inputIndex == localRow-2;
+						boolean condiFour = localRow == (input.length - 1);
+						boolean condiOne = waitingObject.iterationCount != 0 && waitingObject.iterationCount != -1;
+						
+						if (condiOne && (condiTwo||condiThree||condiFour)) {
 							//Check if object's iteration count is completed
-								
 								int presentValLocal = currentVal;
-								if (currentVal == spare) {
-									//For spare, reduce last score and add current value 
+								if (currentVal == SPARE) {
+									//For SPARE, reduce last score and add current value 
 									presentValLocal = 10;
 									waitingObject.liveScore = waitingObject.liveScore + presentValLocal - waitingObject.lastAddedValue;
 									waitingObject.lastAddedValue = presentValLocal;
@@ -183,14 +175,14 @@ public class MainManager {
 				}
 
 				if (shouldWaitForSpare) {
-					//updating spare score
+					//updating SPARE score
 					spareScoreLast = spareScoreLast + currentVal;
 					shouldWaitForSpare = false;
 					// put value to last index of output
 					int previousIndex= spareWaitIndex-1>0?spareWaitIndex-1:0;
 					output[spareWaitIndex][0] = spareScoreLast+ output[previousIndex][0];
 					
-					// reset the spare indexes
+					// reset the SPARE indexes
 					spareScoreLast = -1;
 					spareWaitIndex = -1;
 					localSum = 0;
@@ -201,28 +193,28 @@ public class MainManager {
 				{
 					switch (currentVal) {
 
-					case spare:
+					case SPARE:
 
-						//For spare, keep last score as 10 and update waiting index
+						//For SPARE, keep last score as 10 and update waiting index
 						shouldWaitForSpare = true;
 						spareScoreLast = 10;
 						spareWaitIndex = row;
 
 						break;
 
-					case strike:
+					case STRIKE:
 
 						strikeScoreLast = 10;
 						//Iterate list and check if object is already available
 						//If then update the score
-						if (strikeWaitingList.size() > 0) {
+						if (!strikeWaitingList.isEmpty()) {
 								boolean isValueAvailable = false;
 								for (int i = 0; i < strikeWaitingList.size(); i++) {
 									WaitingObject waitingObject = strikeWaitingList.get(i);
 									if (waitingObject.inputIndex == row) {
 										isValueAvailable = true;
 										waitingObject.liveScore = waitingObject.liveScore + strikeScoreLast;// update
-																											// strike
+																											// STRIKE
 									}
 								}
 								// Iterated over array, element with index not
@@ -249,15 +241,14 @@ public class MainManager {
 					int checkPoint = columsToConsider - 1;
 					if (col == checkPoint) {
 						
-						if (spareScoreLast != -1 && (false == shouldWaitForSpare)) {
-							//Update spare's score to last index + spare last score
+						if (spareScoreLast != -1 && (!shouldWaitForSpare)) {
+							//Update SPARE's score to last index + SPARE last score
 							int previousIndex= row-1 >0 ?row-1:0;
 							output[row][0] = spareScoreLast+output[previousIndex][0];
 							localSum = 0;
 							spareWaitIndex = row;
 						} else if (shouldWaitForSpare) {
 							// don't add sum, keep values in waiting list only
-							continue;
 						} else {
 							//Update local score 
 							int previousIndex= row-1 >0 ?row-1:0;
