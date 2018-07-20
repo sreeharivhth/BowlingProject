@@ -1,6 +1,7 @@
 package one.bow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 /**
  * Main class for calculating individual frame in bowling and total score 
  * @author Sreehari.KV
@@ -9,101 +10,72 @@ import java.util.ArrayList;
 public class MainManager {
 
 	private static final int STRIKE = 10;
-	private static final int SPARE = -10;
-	private static final int STRIKE_BUDDY = -4;
+	private static final int SPARE = 201;
+	private static final int STRIKE_BUDDY = 401;
 
-	// int[][] input = new
+	// int[][] mInput = new
 	// int[][]{{1,2},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{1,2,2}};//success
 
-	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
-								{ STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
-								{ STRIKE,STRIKE_BUDDY }, { STRIKE, STRIKE, STRIKE } };//success
-*/	 
-	/*int[][] input = new int[][] { { 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
-		{ 1,1 }, { 1,1 }, { 1,1 }, { 1,1 },
-		{ 1,1 }, { 1,1, 0 } };//success 20
-*/		
 	
-	/*int[][] input = new int[][] { { 1,SPARE }, { 1,1 }, { STRIKE,STRIKE_BUDDY }, { 1,1 },
+	/*int[][] mInput = new int[][] { { 1,SPARE }, { 1,1 }, { STRIKE,STRIKE_BUDDY }, { 1,1 },
 		{ 1,1 }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { 1,1 },
 		{ 1,1 }, { 1,1, 0 } };//Success 68
 */	 	
-	/*int[][] input = new int[][] { { 1,4 }, { 4,5 }, { 6,SPARE }, { 5,SPARE },
+	/*int[][] mInput = new int[][] { { 1,4 }, { 4,5 }, { 6,SPARE }, { 5,SPARE },
 		{ STRIKE,STRIKE_BUDDY }, { 0,1 }, { 7,SPARE }, { 6,SPARE },
 		{ STRIKE,STRIKE_BUDDY }, { 2,SPARE,6 } };//Success 133 
 */	 
-	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 9,0 }, { 7,SPARE }, { STRIKE,STRIKE_BUDDY },
+	/*int[][] mInput = new int[][] { { STRIKE,STRIKE_BUDDY }, { 9,0 }, { 7,SPARE }, { STRIKE,STRIKE_BUDDY },
 		{ STRIKE,STRIKE_BUDDY }, { 7,0 }, { 9,SPARE }, { 8,SPARE },
 		{ STRIKE,STRIKE_BUDDY }, { 9,SPARE,1} };//Success 168 as final score
 	*/
 	
-	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
+	/*int[][] mInput = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
 		{ 9,0 }, { STRIKE,5,4} };//WORKS ==64
 	 */
-	/*int[][] input = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
+	/*int[][] mInput = new int[][] { { 1,0 }, { 2,0 }, { 3,0 }, { 4,0 },
 		{ 5 , 0  }, { 6,0 }, {	7,0 }, { 8,0 },
 		{ 1,SPARE }, { STRIKE,1,1} };// WORKING 68
 */	
-	/*int[][] input = new int[][] { { 8,0 }, { 6,0 }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY },
-		{ STRIKE,STRIKE_BUDDY }, { 8,0 }, {STRIKE,STRIKE_BUDDY}, { 6,1 },
-		{ STRIKE,STRIKE_BUDDY }, { STRIKE,7,2} };//Correct 168
-		*/
-	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 8,1 }, { 5,4 }, { STRIKE,STRIKE_BUDDY },
-		{ 8 , 1 }, { 7, 2 }, {	6 , 3 }, { 7, 2 },
-		{ 8,SPARE }, { STRIKE,STRIKE,9} };//Correct 141
-	 */
 	
-	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY }, { 7,2 }, { STRIKE,STRIKE_BUDDY }, { 6 , 3 },
+	
+	/*int[][] mInput = new int[][] { { STRIKE,STRIKE_BUDDY }, { 7,2 }, { STRIKE,STRIKE_BUDDY }, { 6 , 3 },
 		{ 8 , SPARE }, { 7, 0 }, {	7 , SPARE }, { 9 , 0 },
 		{ 9 , 0 }, { 9 ,SPARE,9} };//Correct 136
 	 */
 	
-	/*int[][] input = new int[][] { { 9,SPARE }, { 7,SPARE }, { 9,SPARE }, { STRIKE,STRIKE_BUDDY  },
+	/*int[][] mInput = new int[][] { { 9,SPARE }, { 7,SPARE }, { 9,SPARE }, { STRIKE,STRIKE_BUDDY  },
 		{ 8 , 1 }, { 9, SPARE }, {	STRIKE,STRIKE_BUDDY }, { 7 , SPARE },
 		{ 7 , SPARE }, { STRIKE , 5 , 4} };//Success 180
 		*/
-	/*int[][] input = new int[][] { { STRIKE,STRIKE_BUDDY  }, { 9,0 }, { 7,SPARE }, { STRIKE,STRIKE_BUDDY  },
-		{ STRIKE,STRIKE_BUDDY  }, { 7, 0 }, { 9, SPARE }, { 8 , SPARE },
-		{ STRIKE,STRIKE_BUDDY  }, { 9 , SPARE , 1} };//Got 177, game got 168
-	 */
 	
-	/*int[][] input = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
+	/*int[][] mInput = new int[][] { { 1,0 }, { 1,0 }, { 1,0 }, { 1,0  },
 		{ 1,0  }, { 1,0  }, { 1,0  }, { 1,0  },
 		{ 1,0  }, { 1, 0 , 1} }; //WORKS
 */		
-	/*int[][] input = new int[][] { { 1,0 }, { STRIKE,STRIKE_BUDDY }, { 1,0 }, { 1,0  },
+	/*int[][] mInput = new int[][] { { 1,0 }, { STRIKE,STRIKE_BUDDY }, { 1,0 }, { 1,0  },
 		{ STRIKE,STRIKE_BUDDY }, { 1,0  }, { 1,SPARE  }, { 1,0  },
 		{ 1,0  }, { 1, 0 , 0} }; WORKS*/
 	
-	/*int[][] input = new int[][] { { 1,SPARE }, { 4,SPARE }, { 2,0 }, { STRIKE,STRIKE_BUDDY  },
+	/*int[][] mInput = new int[][] { { 1,SPARE }, { 4,SPARE }, { 2,0 }, { STRIKE,STRIKE_BUDDY  },
 		{ 5,SPARE }, { 8,0  }, { 8,SPARE  }, { 3,4  },
 		{ STRIKE,STRIKE_BUDDY  }, { STRIKE, STRIKE , STRIKE} };//correct 154
 		*/
 	
-	/*int[][] input = new int[][] { { 3,SPARE }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { 7,1 },
+	int[][] mInput = new int[][] { { 3,SPARE }, { STRIKE,STRIKE_BUDDY }, { STRIKE,STRIKE_BUDDY }, { 7,1 },
 		{ 0,3 }, { STRIKE,STRIKE_BUDDY }, { 9,SPARE  }, { 4,5  },
 		{ STRIKE,STRIKE_BUDDY  }, { 3, SPARE , 1} }; //correct 150
-	*/
 	
-	/*int[][] mInput = new int[][] { { STRIKE,STRIKE_BUDDY }, { 8,1 }, { 5,4 }, { STRIKE,STRIKE_BUDDY },
-		{ 8,1 }, { 7,2 }, { 6,3 }, { 7,2  },
-		{ 8,SPARE }, { STRIKE, STRIKE ,9} };//correct 141
-	 */
-	
-	int[][] mInput = new int[][] { { STRIKE,STRIKE_BUDDY }, { 7,2 }, { STRIKE,STRIKE_BUDDY  }, { 6,3 },
-		{ 8,SPARE }, { 7,0 }, { 7,SPARE }, { 9,0  },
-		{ 9,0 }, { 9 , SPARE ,9} };//Correct 136
-	
-	int[][] mOutput = new int[mInput.length][1];
-	private ArrayList<WaitingObject> mWaitingList = new ArrayList<>();
-	private boolean isExceptionCaused=false;
-	private boolean shouldWaitForSpare = false;
-	private int mSpareWaitIndex = -1;
-	private int mSpareScoreLast = -1;	
+	int[][] mOutput;
+	private ArrayList<WaitingObject> mWaitingList;
+	private boolean isExceptionCaused;
+	private boolean shouldWaitForSpare;
+	private int mSpareWaitIndex;
+	private int mSpareScoreLast;	
 	
 	public static void main(String[] args) {
-		//new MainManager().calculateScores(mIn);
+		new MainManager().calculateScores(null);
 	}
 	
 	/**
@@ -111,50 +83,67 @@ public class MainManager {
 	 * @return
 	 */
 	public int[][] calculateScores(int[][] mInput) {
+		shouldWaitForSpare = false;
+		isExceptionCaused=false;
+		mSpareWaitIndex = -1;
+		mSpareScoreLast = -1;
+		mWaitingList = new ArrayList<>();
+		if(null==mInput)
+			mInput=this.mInput;
 		
-		int columsToConsider = 0;
+		mOutput = new int[mInput.length][1];
 		
-		//Outer array traversal (row)
-		for (int row = 0; row < mInput.length; row++) {
-			
-			int localSum = 0;
-			
-			if (row != 9) {
-				columsToConsider = 2;
-			} else {
-				columsToConsider = 3;
-				WaitingObject waitingNinthObject  = createWaitObject(row,columsToConsider,0,0);
-				mWaitingList.add(waitingNinthObject);
+		try {
+			int columsToConsider = 2;		
+			//Outer array traversal (row)
+			for (int row = 0; row < mInput.length; row++) {
+				int localSum = 0;
+				if (row == 9) {
+					columsToConsider = 3;
+					WaitingObject waitingNinthObject  = createWaitObject(row,columsToConsider,0,0);
+					mWaitingList.add(waitingNinthObject);
+				} 
+				//Inner array traversal (columns)
+				for (int col = 0; col < columsToConsider; col++) {
+					int currentVal = mInput[row][col];
+					if(!isEntryValid(currentVal)){
+						throw new Exception("Invalid Entry ("+currentVal + ") ");
+					}
+					if (currentVal == STRIKE_BUDDY) {
+						continue;
+					}
+					iterateWaitingList(row, currentVal);
+					if (shouldWaitForSpare) {
+						localSum = spareCaseUpdate(currentVal);
+					}
+					//If current row is not the last one, then proceed
+					if(row!=9)
+					{
+						localSum = checkSpecialCases(columsToConsider, row, localSum, currentVal);
+						updateCheckPoint(columsToConsider, row, localSum, col);
+					}
+				}//End of inner array iteration
 			}
-
-			//Inner array traversal (columns)
-			for (int col = 0; col < columsToConsider; col++) {
-
-				int currentVal = mInput[row][col];
-				if (currentVal == STRIKE_BUDDY) {
-					continue;
-				}
-
-				iterateWaitingList(row, currentVal);
-
-				if (shouldWaitForSpare) {
-					localSum = spareCaseUpdate(currentVal);
-				}
-				
-				//If current row is not the last one, then proceed
-				if(row!=9)
-				{
-					localSum = checkBowlCases(columsToConsider, row, localSum, currentVal);
-					
-					updateCheckPoint(columsToConsider, row, localSum, col);
-				}
-			}//End of inner array iteration
+			//End of outer array iteration
+			
+			printOutput();
+		} catch (Exception e) {
+			System.out.println(e.toString());
 		}
-		//End of outer array iteration
-		
-		printOutput();
 	
 		return mOutput;
+	}
+	
+	private boolean isEntryValid(int val){
+		boolean isValid=true;
+		if(val<0){
+			isValid=false;
+			return isValid;
+		}else if(val>10&& val!=SPARE && val!=STRIKE_BUDDY){
+			isValid=false;
+			return isValid;
+		}
+		return isValid;
 	}
 
 	/**
@@ -165,7 +154,7 @@ public class MainManager {
 	 * @param currentVal
 	 * @return
 	 */
-	private int checkBowlCases(int columsToConsider, int row, int localSum, int currentVal) {
+	private int checkSpecialCases(int columsToConsider, int row, int localSum, int currentVal) {
 		int strikeScoreLast;
 		switch (currentVal) {
 
@@ -352,6 +341,8 @@ public class MainManager {
 
 		for (int row = 0; row < mInput.length; row++)
 			for (int col = 0; col < 1; col++)
-				System.out.println(mOutput[row][col]);
+				System.out.print(mOutput[row][col]+",");
+		
+		System.out.println(" ");
 	}
 }
