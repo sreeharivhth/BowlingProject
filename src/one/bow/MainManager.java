@@ -1,7 +1,7 @@
 package one.bow;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 /**
  * Main class for calculating individual frame in bowling and total score 
  * @author Sreehari.KV
@@ -68,11 +68,11 @@ public class MainManager {
 		{ STRIKE,STRIKE_BUDDY  }, { 3, SPARE , 1} }; //correct 150
 	
 	int[][] mOutput;
-	private ArrayList<WaitingObject> mWaitingList;
-	private boolean isExceptionCaused;
-	private boolean shouldWaitForSpare;
-	private int mSpareWaitIndex;
-	private int mSpareScoreLast;	
+	ArrayList<WaitingObject> mWaitingList;
+	boolean shouldWaitForSpare;
+	int mSpareWaitIndex;
+	int mSpareScoreLast;
+	boolean shouldWaitForStrikeBuddy;	
 	
 	public static void main(String[] args) {
 		new MainManager().calculateScores(null);
@@ -82,9 +82,9 @@ public class MainManager {
 	 * Calculation of bowling scores
 	 * @return
 	 */
-	public int[][] calculateScores(int[][] mInput) {
+	int[][] calculateScores(int[][] mInput) {
+		
 		shouldWaitForSpare = false;
-		isExceptionCaused=false;
 		mSpareWaitIndex = -1;
 		mSpareScoreLast = -1;
 		mWaitingList = new ArrayList<>();
@@ -94,6 +94,9 @@ public class MainManager {
 		mOutput = new int[mInput.length][1];
 		
 		try {
+			if(mInput.length!=10){
+				throw new InvalidEntryException("Total frame number should be 10 for a valid game");
+			}
 			int columsToConsider = 2;		
 			//Outer array traversal (row)
 			for (int row = 0; row < mInput.length; row++) {
@@ -107,9 +110,15 @@ public class MainManager {
 				for (int col = 0; col < columsToConsider; col++) {
 					int currentVal = mInput[row][col];
 					if(!isEntryValid(currentVal)){
-						throw new Exception("Invalid Entry ("+currentVal + ") ");
+						throw new InvalidEntryException("Invalid Entry ("+currentVal + ") ");
+					}
+					
+					if(shouldWaitForStrikeBuddy && row!=(mInput.length - 1) && currentVal != STRIKE_BUDDY){
+						shouldWaitForStrikeBuddy=false;
+						throw new InvalidEntryException("Except last frame, STRIKE should followd by STRIKE_BUDDY");
 					}
 					if (currentVal == STRIKE_BUDDY) {
+						shouldWaitForStrikeBuddy=false;
 						continue;
 					}
 					iterateWaitingList(row, currentVal);
@@ -134,14 +143,10 @@ public class MainManager {
 		return mOutput;
 	}
 	
-	private boolean isEntryValid(int val){
+	boolean isEntryValid(int val){
 		boolean isValid=true;
-		if(val<0){
+		if((val<0) || (val>10&& val!=SPARE && val!=STRIKE_BUDDY)){
 			isValid=false;
-			return isValid;
-		}else if(val>10&& val!=SPARE && val!=STRIKE_BUDDY){
-			isValid=false;
-			return isValid;
 		}
 		return isValid;
 	}
@@ -154,8 +159,8 @@ public class MainManager {
 	 * @param currentVal
 	 * @return
 	 */
-	private int checkSpecialCases(int columsToConsider, int row, int localSum, int currentVal) {
-		int strikeScoreLast;
+	int checkSpecialCases(int columsToConsider, int row, int localSum, int currentVal) {
+		
 		switch (currentVal) {
 
 		case SPARE:
@@ -169,7 +174,6 @@ public class MainManager {
 
 		case STRIKE:
 
-			strikeScoreLast = 10;
 			//Iterate list and check if object is already available
 			//If then update the score
 			if (!mWaitingList.isEmpty()) {
@@ -178,8 +182,7 @@ public class MainManager {
 						WaitingObject waitingObject = mWaitingList.get(i);
 						if (waitingObject.inputIndex == row) {
 							isValueAvailable = true;
-							waitingObject.liveScore = waitingObject.liveScore + strikeScoreLast;// update
-																								// STRIKE
+							waitingObject.liveScore = waitingObject.liveScore + STRIKE;// update STRIKE
 						}
 					}
 					// Iterated over array, element with index not
@@ -195,6 +198,7 @@ public class MainManager {
 					WaitingObject waitingObject = createWaitObject(row,columsToConsider,10,10);
 					mWaitingList.add(waitingObject);
 				}
+			shouldWaitForStrikeBuddy=true;
 			break;
 
 		default:
@@ -210,7 +214,7 @@ public class MainManager {
 	 * @param currentVal
 	 * @return
 	 */
-	private int spareCaseUpdate(int currentVal) {
+	int spareCaseUpdate(int currentVal) {
 		int localSum;
 		//updating SPARE score
 		mSpareScoreLast = mSpareScoreLast + currentVal;
@@ -233,7 +237,7 @@ public class MainManager {
 	 * @param localSum
 	 * @param col
 	 */
-	private void updateCheckPoint(int columsToConsider, int row, int localSum, int col) {
+	void updateCheckPoint(int columsToConsider, int row, int localSum, int col) {
 		int checkPoint = columsToConsider - 1;
 		if (col == checkPoint) {
 			if (mSpareScoreLast != -1 && (!shouldWaitForSpare)) {
@@ -256,7 +260,7 @@ public class MainManager {
 	 * @param row
 	 * @param currentVal
 	 */
-	private void iterateWaitingList(int row, int currentVal) {
+	void iterateWaitingList(int row, int currentVal) {
 		// Iterate over @strikeWaitingList
 			for (int i = 0; i < mWaitingList.size(); i++) {
 				
@@ -295,7 +299,7 @@ public class MainManager {
 	 * Setting score of last index with waiting object
 	 * @param waitingObject
 	 */
-	private void updateWaitingListObj(WaitingObject waitingObject) {
+	void updateWaitingListObj(WaitingObject waitingObject) {
 		// update the score if iteration is finished to last index
 		int previousIndex= waitingObject.inputIndex-1>0?waitingObject.inputIndex-1:0;
 		mOutput[waitingObject.inputIndex][0] = waitingObject.liveScore + mOutput[previousIndex][0];	
@@ -312,7 +316,7 @@ public class MainManager {
 	 * @param lastAdded
 	 * @return
 	 */
-	private WaitingObject createWaitObject(int inputIndex,int iterationCount,int liveScore,int lastAdded){
+	WaitingObject createWaitObject(int inputIndex,int iterationCount,int liveScore,int lastAdded){
 		WaitingObject waitingNinthObject = new WaitingObject();
 		waitingNinthObject.inputIndex=inputIndex;
 		waitingNinthObject.iterationCount=iterationCount;
@@ -326,7 +330,7 @@ public class MainManager {
 	 * @author Sreehari.KV
 	 *
 	 */
-	private class WaitingObject {
+	class WaitingObject {
 
 		private int inputIndex;
 		private int liveScore;
